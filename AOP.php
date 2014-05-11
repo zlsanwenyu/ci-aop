@@ -127,9 +127,7 @@ class AOP {
 
 	protected function logCommunicationError($apiName, $requestUrl, $errorCode, $responseTxt) {
 		$localIp = isset ($_SERVER["SERVER_ADDR"]) ? $_SERVER["SERVER_ADDR"] : "CLI";
-		$logger = new LtLogger;
-		$logger->conf["log_file"] = rtrim($this->data_dir, '\\/') . '/' . "logs/aop_comm_err_" . $this->appId . "_" . date("Y-m-d") . ".log";
-		$logger->conf["separator"] = "^_^";
+		$log_file = rtrim($this->data_dir, '\\/') . '/' . "logs/aop_comm_err_" . date("Y-m-d") . ".log";
 		$logData = array (
 			date("Y-m-d H:i:s"),
 			$apiName,
@@ -141,7 +139,7 @@ class AOP {
 			$errorCode,
 			str_replace("\n", "", $responseTxt)
 		);
-		$logger->log($logData);
+		error_log(var_export($logData,true).'\r\n\r\n',3,$log_file);
 	}
 
 	public function execute() {
